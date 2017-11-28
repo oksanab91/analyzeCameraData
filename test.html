@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Test</title>
+
+    <script src="analyze.js"></script>
+
+    <script>
+        var results = {
+            total: 0,
+            bad: 0
+        };
+        var camera1 = {
+            camera_id: 1,
+            images: [{
+                file_size: 42048
+            }, {
+                file_size: 1024
+            }, {
+                file_size: 1448
+            }, {
+                file_size: 42048
+            }, {
+                file_size: 2424
+            }, {
+                file_size: 1028
+            }]
+        };
+
+
+        var camera2 = {
+            camera_id: 2,
+            images: [{
+                file_size: 50048
+            }, {
+                file_size: 3024
+            }, {
+                file_size: 358
+            }, {
+                file_size: 3354
+            }]
+        };
+
+        var camera3 = {
+            camera_id: 3,
+            images: [{
+                file_size: 20048
+            }, {
+                file_size: 7024
+            }, {
+                file_size: 1354
+            }]
+        };
+
+        var resultItems = [{
+            camera_id: 1,
+            sumSize: 90020,
+            imagesCount: 6,
+            imageMax: 42048
+        }, {
+            camera_id: 2,
+            sumSize: 56784,
+            imagesCount: 4,
+            imageMax: 50048
+        }, {
+            camera_id: 3,
+            sumSize: 28426,
+            imagesCount: 3,
+            imageMax: 20048
+        }];
+
+
+        //test get summery data of all the images for one camera
+        function testSumSize(camera, expected) {
+            results.total++;
+
+            var result = getSumSize(camera);
+
+            console.log("testSumSize: id " + camera.camera_id + " " + result);
+
+            if (result !== expected) {
+                results.bad++;
+                console.log("Expected " + expected + ", but was " + result);
+            }
+        }
+
+        //test get the largest images size per camera
+        function testLargestImage(camera, expected) {
+            results.total++;
+
+            var result = getLargestImage(camera);
+
+            console.log("testLargestImage: id " + camera.camera_id + " " + result);
+
+            if (result !== expected) {
+                results.bad++;
+                console.log("Expected " + expected + ", but was " + result);
+            }
+        }
+
+        //test get the largest images per camera
+        function tesImagesCount(camera, expected) {
+            results.total++;
+
+            var result = getImagesCount(camera);
+
+            console.log("testImagesCount: id " + camera.camera_id + " " + result);
+
+            if (result !== expected) {
+                results.bad++;
+                console.log("Expected " + expected + ", but was " + result);
+            }
+        }
+
+        //test which cameras have the highest number of images
+        function testCameraWithMaxNum(items, expected) {
+            results.total++;
+
+            analyzeItems = items;
+            var result = getCameraWithMaxNum();
+
+            console.log("testMaxNumber: camera id " + result);
+
+            if (result !== expected) {
+                results.bad++;
+                console.log("Expected " + expected + ", but was " + result);
+            }
+        }
+
+        //test which cameras have used the most data
+        function testCameraWithMaxUsage(items, expected) {
+            results.total++;
+
+            analyzeItems = items;
+            var result = getCameraWithMaxUsage();
+
+            console.log("testCameraWithMaxUsage: camera id " + result);
+
+            if (result !== expected) {
+                results.bad++;
+                console.log("Expected " + expected + ", but was " + result);
+            }
+        }
+
+        //run tests
+        testSumSize(camera1, 90020);
+        testSumSize(camera2, 56784);
+        testSumSize(camera3, 28426);
+
+        testLargestImage(camera1, 42048);
+        testLargestImage(camera2, 50048);
+        testLargestImage(camera3, 20048);
+
+        tesImagesCount(camera1, 6);
+        tesImagesCount(camera2, 4);
+        tesImagesCount(camera3, 3);
+
+        testCameraWithMaxNum(resultItems, 1);
+        testCameraWithMaxUsage(resultItems, 1);
+
+        console.log("Of " + results.total + " tests, " + results.bad + " failed, " +
+            (results.total - results.bad) + " passed.");
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>
